@@ -1,0 +1,44 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: kaelix-db
+    restart: unless-stopped
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-kaelix}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-kaelix}
+      POSTGRES_DB: ${POSTGRES_DB:-kaelix}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-kaelix} -d ${POSTGRES_DB:-kaelix}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - kaelix-net
+
+  redis:
+    image: redis:7-alpine
+    container_name: kaelix-cache
+    restart: unless-stopped
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - kaelix-net
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  kaelix-net:
+    driver: bridge
