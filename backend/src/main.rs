@@ -26,6 +26,7 @@ async fn main() {
     // making the app
     let app = Router::new()
         .route("/", get(routes::root::root))
+        .route("/up", get(routes::up::health_check))
         .route("/version", get(routes::version::get_version))
         .layer(
             ServiceBuilder::new().layer(
@@ -37,7 +38,7 @@ async fn main() {
         .with_state(state);
 
     //serving
-    let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
+    let addr = SocketAddr::from(([127, 0, 0, 1], 8000));
     tracing::info!("listening on {}", addr);
     let listener = tokio::net::TcpListener::bind(addr).await.unwrap();
     axum::serve(listener, app).await.unwrap();
