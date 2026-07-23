@@ -1,7 +1,5 @@
 # kaelix
 
-> container management — simple, fast, from the terminal.
-
 ## stack
 
 | Layer    | Tech                              |
