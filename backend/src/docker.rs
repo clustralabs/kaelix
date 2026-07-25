@@ -4,6 +4,8 @@ use bollard::query_parameters::CreateImageOptions;
 use futures_util::StreamExt;
 
 /// pull an image from the registry, streaming progress to the logs
+// TODO: wire this up to a route handler — kept as a helper for now
+#[allow(dead_code)]
 pub async fn pull_image(docker: &Docker, image: &str, tag: &str) -> Result<(), Error> {
     let options = CreateImageOptions {
         from_image: Some(image.to_string()),
@@ -21,7 +23,9 @@ pub async fn pull_image(docker: &Docker, image: &str, tag: &str) -> Result<(), E
         // the daemon reports pull failures mid-stream as errorDetail
         if let Some(detail) = output.error_detail {
             return Err(Error::DockerStreamError {
-                error: detail.message.unwrap_or_else(|| "unknown pull error".into()),
+                error: detail
+                    .message
+                    .unwrap_or_else(|| "unknown pull error".into()),
             });
         }
         if let Some(status) = output.status {
