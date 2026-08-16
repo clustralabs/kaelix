@@ -15,10 +15,10 @@
 docker compose up -d
 
 # run the backend
-cd backend && cargo run
+cd Rust && cargo run
 
 # run the frontend
-cd frontend && bun dev
+cd JS && bun dev
 ```
 
 Copy `.env.example` to `.env` and configure as needed.
@@ -27,8 +27,8 @@ Copy `.env.example` to `.env` and configure as needed.
 
 ```
 kaelix/
-├── backend/        # Rust + Axum API
-├── frontend/       # Next.js App Router + Tailwind
+├── Rust/           # Rust + Axum API
+├── JS/             # Next.js App Router + Tailwind
 ├── docker-compose.yml
 └── .env.example
 ```
