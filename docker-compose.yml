@@ -19,6 +19,44 @@ services:
     networks:
       - kaelix-net
 
+  backend:
+    build:
+      context: ./Rust
+    restart: unless-stopped
+    ports:
+      - "${BACKEND_PORT:-8000}:8000"
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER:-kaelix}:${POSTGRES_PASSWORD:-kaelix}@postgres:5432/${POSTGRES_DB:-kaelix}
+      RUST_LOG: ${RUST_LOG:-kaelix=info,tower_http=info}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget --spider -q http://localhost:8000/up || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    networks:
+      - kaelix-net
+
+  frontend:
+    build:
+      context: ./JS
+      args:
+        API_URL: http://backend:8000
+    restart: unless-stopped
+    ports:
+      - "${FRONTEND_PORT:-3000}:3000"
+    environment:
+      API_URL: http://backend:8000
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - kaelix-net
+
   redis:
     image: redis:7-alpine
     container_name: kaelix-cache
@@ -41,4 +79,5 @@ volumes:
 
 networks:
   kaelix-net:
+    name: kaelix-net
     driver: bridge
