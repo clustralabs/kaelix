@@ -11,14 +11,17 @@
 ## getting started
 
 ```bash
-# start services (postgres, redis)
-docker compose up -d
+# start the complete stack (frontend, API, postgres, redis)
+cp .env.example .env
+docker compose up --build
 
-# run the backend
-cd backend && cargo run
+# frontend: http://localhost:3000
+# API:      http://localhost:8000
 
-# run the frontend
-cd frontend && bun dev
+# For local development without containerizing the app:
+# docker compose up -d postgres redis
+# cd Rust && DATABASE_URL=postgres://kaelix:kaelix@localhost:5432/kaelix cargo run
+# cd JS && bun dev
 ```
 
 Copy `.env.example` to `.env` and configure as needed.
@@ -27,8 +30,8 @@ Copy `.env.example` to `.env` and configure as needed.
 
 ```
 kaelix/
-├── backend/        # Rust + Axum API
-├── frontend/       # Next.js App Router + Tailwind
+├── Rust/           # Rust + Axum API
+├── JS/             # Next.js App Router + Tailwind
 ├── docker-compose.yml
 └── .env.example
 ```

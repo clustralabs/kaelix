@@ -6,8 +6,8 @@ const geistSans = Geist({ variable: "--font-geist-sans" });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono" });
 
 export const metadata: Metadata = {
-  title: "kaelix",
-  description: "coming soon",
+  title: "kaelix | Container control",
+  description: "A small control plane for containerized services.",
 };
 
 export default function RootLayout({
