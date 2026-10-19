@@ -1,8 +1,8 @@
 use bollard::Docker;
-use sqlx::PgPool;
+use turso::Connection;
 
 #[derive(Clone)]
 pub struct AppState {
     pub docker: Docker,
-    pub pool: PgPool, // PgPool is cheaply cloneable (internally an Arc)
+    pub db: Connection, // Connection is cheaply cloneable (internally Arc handles)
 }
