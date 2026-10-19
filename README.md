@@ -6,32 +6,38 @@
 | -------- | --------------------------------- |
 | Frontend | Next.js 16, React 19, Tailwind v4 |
 | Backend  | Rust, Axum                        |
-| Infra    | Docker Compose, Postgres, Redis   |
+| Database | Turso (libSQL)                    |
 
 ## getting started
 
+Run both the frontend and backend with a single command:
+
 ```bash
-# start the complete stack (frontend, API, postgres, redis)
-cp .env.example .env
-docker compose up --build
-
-# frontend: http://localhost:3000
-# API:      http://localhost:8000
-
-# For local development without containerizing the app:
-# docker compose up -d postgres redis
-# cd Rust && DATABASE_URL=postgres://kaelix:kaelix@localhost:5432/kaelix cargo run
-# cd JS && bun dev
+./dev.sh
 ```
 
-Copy `.env.example` to `.env` and configure as needed.
+Or run them individually:
+
+```bash
+# backend (http://localhost:8000)
+cd Rust && cargo run
+
+# frontend (http://localhost:3000)
+cd JS && bun dev
+```
+
+Configure `.env` as needed (defaults to local `kaelix.db` for Turso).
 
 ## structure
 
 ```
 kaelix/
-├── Rust/           # Rust + Axum API
+├── Rust/           # Rust + Axum API (Turso database integration)
 ├── JS/             # Next.js App Router + Tailwind
-├── docker-compose.yml
+├── dev.sh          # One-click startup script for frontend and backend
+├── DOCUMENTATION.md # Comprehensive architecture & technical documentation
 └── .env.example
 ```
+
+For detailed system architecture, API endpoints, schema, and development details, see [DOCUMENTATION.md](file:///Users/param/kaelix/DOCUMENTATION.md).
+

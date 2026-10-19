@@ -24,14 +24,19 @@ async fn main() {
     let docker =
         Docker::connect_with_local_defaults().expect("failed to connect to the Docker daemon");
 
-    // Postgres: URL from env, defaulting to the dev compose setup
-    let database_url = std::env::var("DATABASE_URL")
-        .unwrap_or_else(|_| "postgres://kaelix:kaelix@localhost:5432/kaelix".to_string());
-    let pool = db::connect(&database_url);
-    db::run_migrations(&pool).await;
+    // Turso database connection
+    let db = match db::connect().await {
+        Ok(conn) => {
+            db::run_migrations(&conn).await;
+            conn
+        }
+        Err(err) => {
+            panic!("failed to connect to Turso database: {err}");
+        }
+    };
 
     // add it to the shared app state
-    let state = AppState { docker, pool };
+    let state = AppState { docker, db };
     // making the app
     let app = Router::new()
         .route("/", get(routes::root::root))

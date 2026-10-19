@@ -68,5 +68,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Build images
-        run: docker compose build
+      - name: Build backend image
+        run: docker build ./Rust
+
+      - name: Build frontend image
+        run: docker build ./JS

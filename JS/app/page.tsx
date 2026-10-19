@@ -95,9 +95,9 @@ export default function Home() {
         <div className="service-grid">
           <article className="service-card">
             <div className="service-card-top"><span className="service-icon db-icon" aria-hidden="true">▦</span><ServiceBadge state={database} /></div>
-            <h3>Postgres</h3>
+            <h3>Turso</h3>
             <p>Primary data store</p>
-            <div className="service-meta"><span>postgres:5432</span><span className="meta-live">● {database === "online" ? "reachable" : "awaiting connection"}</span></div>
+            <div className="service-meta"><span>libsql</span><span className="meta-live">● {database === "online" ? "reachable" : "awaiting connection"}</span></div>
           </article>
           <article className="service-card">
             <div className="service-card-top"><span className="service-icon docker-icon" aria-hidden="true">◇</span><ServiceBadge state={docker} /></div>

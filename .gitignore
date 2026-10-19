@@ -25,3 +25,9 @@
 *.profraw
 tarpaulin-report.html
 cobertura.xml
+
+# SQLite / Turso local databases
+*.db
+*.db-wal
+*.db-shm
+
